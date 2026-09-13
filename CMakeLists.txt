@@ -14,6 +14,8 @@ project ("Reverse5-1")
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_compile_definitions(WIN32_LEAN_AND_MEAN NOMINMAX)
+
 # Добавьте источник в исполняемый файл этого проекта.
 add_executable (Reverse5-1 "Reverse5-1.cpp" "Reverse5-1.h")
 
