@@ -18,10 +18,6 @@
 #include <compare>		// used for operator<=> (sorting results)
 #include <fstream>		// used for std::ifstream
 
-#include <Windows.h>	// required by bcrypt.h
-#include <bcrypt.h>		// used for PBKDF2 + SHA-256
-#pragma comment(lib, "bcrypt.lib")
-
 
 inline constexpr auto PASSWORD_PATH = "password.txt";
 inline constexpr auto SERIAL_PATH = "serial.txt";
