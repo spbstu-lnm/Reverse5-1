@@ -1,6 +1,11 @@
 ﻿/******************************************************************************
 * 	
-* 	Reverse5-1.h : include file
+* 	Reverse5-1.h : application include file
+* 
+*	C++23, CMake 3.20+
+* 
+*	NOTES:
+*		...
 * 
 ******************************************************************************/
 
@@ -12,27 +17,33 @@
 #include <filesystem>	// used for fs::path etc
 #include <span>			// used for std::span
 #include <vector>		// used for std::vector
+#include <string>		// used for std::string
 #include <string_view>	// used for std::string_view
 #include <ranges>		// used for std::views::drop
 #include <expected>		// used for std::expected etc
 #include <compare>		// used for operator<=> (sorting results)
 #include <fstream>		// used for std::ifstream
+#include <sstream>		// used for std::stringstream
+#include <format>		// used for std::format
 
-#include <Windows.h>	// required by bcrypt.h
-#include <bcrypt.h>		// used for PBKDF2 + SHA-256
-#pragma comment(lib, "bcrypt.lib")
+// WIN32_LEAN_AND_MEAN + NOMINMAX are defined in CMakeLists.txt
+#include <Windows.h>	// SecureZeroMemory, Sleep, etc
+
+#include "Protect.h"
 
 
-inline constexpr auto PASSWORD_PATH = "password.txt";
-inline constexpr auto SERIAL_PATH = "serial.txt";
+// following string constants are protected
+inline std::string PASSWORD_PATH() { return PROTECT_XORSTR("password.txt"); }
+inline std::string SERIAL_PATH()   { return PROTECT_XORSTR("serial.txt"); }
 
-inline constexpr auto SERIAL_PREFIX = "KEY$";
-inline constexpr auto SERIAL_SUFFIX = "$";
+inline std::string SERIAL_PREFIX() { return PROTECT_XORSTR("KEY$"); }
+inline std::string SERIAL_SUFFIX() { return PROTECT_XORSTR("$"); }
+
 // size of serial in bytes
 inline constexpr auto SERIAL_SIZE = 5;
 
-inline constexpr auto FAIL_MSG_PREFIX = "FAIL: ";
-inline constexpr auto DONE_MSG_PREFIX = "DONE: ";
+inline std::string FAIL_MSG_PREFIX() { return PROTECT_XORSTR("FAIL: "); }
+inline std::string DONE_MSG_PREFIX() { return PROTECT_XORSTR("DONE: "); }
 
 inline constexpr auto DROPPED_ARGS = 1;
 inline constexpr auto MIN_REQUIRED_ARGS = 3;

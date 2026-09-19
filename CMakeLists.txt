@@ -1,7 +1,7 @@
 ﻿# CMakeList.txt: проект CMake для Reverse5-1; включите исходный код и определения,
 # укажите здесь логику для конкретного проекта.
 #
-cmake_minimum_required (VERSION 3.20)
+cmake_minimum_required(VERSION 3.20)
 
 # Включение горячей перезагрузки для компиляторов MSVC, если поддерживается.
 if (POLICY CMP0141)
@@ -9,14 +9,31 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("Reverse5-1")
+project("Reverse5-1")
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#define DEBUG if needed
+#add_compile_definitions(DEBUG)
+
+#define PROTECT_CALIBRATE to calibrate integrity check
+#add_compile_definitions(PROTECT_CALIBRATE)
+
 add_compile_definitions(WIN32_LEAN_AND_MEAN NOMINMAX)
 
+enable_language(ASM_MASM)
+
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (Reverse5-1 "Reverse5-1.cpp" "Reverse5-1.h")
+add_executable(Reverse5-1 "Reverse5-1.cpp" "Reverse5-1.h")
+
+target_sources(Reverse5-1
+	PRIVATE
+		"Disasm.asm"
+		"Protect.h"
+		"Protect.cpp"
+)
+
+set_source_files_properties("Disasm.asm" PROPERTIES LANGUAGE ASM_MASM)
 
 set_target_properties(Reverse5-1 PROPERTIES OUTPUT_NAME "crackme")
